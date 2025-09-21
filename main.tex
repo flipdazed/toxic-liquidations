@@ -1,0 +1,129 @@
+\documentclass[11pt]{article}
+\bibliographystyle{IEEEtran}
+\usepackage{amsmath,amssymb,amsthm,geometry,hyperref}
+\geometry{margin=1in}
+
+\title{Toxicity Bounds for Dutch-Auction Liquidations}
+\author{Alex McFarlane}
+\date{\today}
+
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}{Remark}
+
+\begin{document}
+\maketitle
+
+\begin{abstract}
+We derive a slippage-aware toxicity condition for on-chain liquidations executed via a constant-product automated market-maker (CP-AMM). For a fixed (constant) liquidation incentive \(i\), the familiar toxicity frontier \( \mathrm{LTV} < 1/(1+i) \) tightens to
+\(\mathrm{LTV} < 1/(1+i)\lambda\) with \(\lambda := 1 + 2(c/y)\), where \(c\) is the borrower’s collateral (in debt units) and \(y\) is the CP-AMM reserve of the debt asset. For `Dutch' auctions with a health-linked incentive \(i(h) = 1 - h\), we obtain a state-dependent bound and, at the liquidation boundary, a depth-only condition \( \,v < 1/\lambda\). This reconciles dynamic incentives with CP-AMM price impact and clarifies when Dutch auctions reduce versus exacerbate spiral risk.
+\end{abstract}
+
+\section{Introduction}
+We consider a borrower with collateral value \(c\) (measured in units of the debt asset) and debt \(q\). Let
+\[
+\ell := \frac{q}{c} \quad \text{(LTV)}, 
+\qquad v \in (0,1) \quad \text{(protocol LLTV parameter)}.
+\]
+for a health \( h := v\,\frac{c}{q} = v/\ell \). Upon a small liquidation repaying \(da\) units of debt, the liquidator is entitled to a bonus \(i \ge 0\) (possibly state dependent); a fraction \((1+i)\,da\) of collateral value is seized.\footnote{For definitions of \(h\) and the bonus schedule, and the criterion under which liquidation can reduce health even in fixed-bonus systems \cite{Bentley}.}
+
+\section{Slippage-aware toxicity}
+
+\subsection{CP-AMM price impact model}
+We consider liquidations that route through a CP-AMM with reserves \((x,y)\) for (collateral,debt), price \(P=y/x\), and invariant \(xy=k\). The CP-AMM’s local price impact is
+\begin{equation}
+d(\ln P) \;=\; d(\ln y - \ln x) \;=\; -2\,\frac{dx}{x}
+\label{eq:cp-impact}
+\end{equation}
+Selling \((1+i)\,da\) of \emph{value} in the collateral implies \(dx = \frac{(1+i)\,da}{P}\), hence \(d(\ln P) = -\frac{2(1+i)}{y}\,da\).
+
+The remaining collateral is re-marked by
+\[
+dc' = c\,d(\ln P) = -\frac{2c(1+i)}{y}\,da,
+\]
+and direct seizure removes \((1+i)\,da\), so
+\[
+dc = - (1+i)\,da \;-\; \frac{2c(1+i)}{y}\,da
+= -(1+i)\Bigl(1+\frac{2c}{y}\Bigr)da,
+\qquad dq=-da.
+\]
+Differentiating \(h = v c/q\) yields
+\[
+dh \;=\; \frac{v}{q}\!\left[dc - \frac{c}{q}\,dq\right]
+\;=\; \frac{v}{q}\!\left[-(1+i)\!\left(1+\frac{2c}{y}\right) + \frac{c}{q}\right]\!da
+\]
+A liquidation is \emph{toxic} (reduces health) iff \(dh<0\), i.e.
+\begin{equation}
+\frac{c}{q} \;<\; (1+i)\!\left(1+\frac{2c}{y}\right)
+\quad\Longleftrightarrow\quad
+\ell \;<\; \frac{1}{(1+i)\,\lambda},
+\qquad
+\lambda := 1 + 2\,\frac{c}{y}.
+\label{eq:constant-bonus}
+\end{equation}
+In the infinite-liquidity limit \(y\to\infty\) (so \(\lambda\to 1\)), this reduces to the constant-incentive frontier \(\ell < 1/(1+i)\) \cite{WCP2022}.
+
+\subsection{Linear price impact model}
+Warmuz, Chaudhary, and Pinna \cite{WCP2022} propose a linear slippage model to capture execution costs in decentralized liquidations:
+\[
+s(x) = \gamma + \frac{\sigma}{L}\,x,
+\]
+where $s(x)$ is the relative price discount on trade size $x$, $\gamma$ is the spread, $\sigma$ is the slippage parameter, and $L$ is a liquidity scale. The execution price is $1-s(x)$ relative to the oracle.
+
+Linearising around small trades yields an effective per-unit price impact
+\[
+\phi = \frac{\sigma}{L(1-\gamma)}
+\]
+This is directly analogous to Kyle’s $\lambda$ in market microstructure theory \cite{Kyle1985}, which measures the permanent price impact per unit of order flow. The slippage penalty factor now becomes
+\[
+\lambda = 1 + \phi c
+\]
+
+\section{Dynamic Incentives through `Dutch' auctions}
+A so-called `Dutch' auction ties the incentive to health, increasing as health falls:
+\[
+i(h) \;=\; i\,\bigl(1-h\bigr)
+\;=\; i\!\left(1 - \frac{v}{\ell}\right),
+\]
+capped at the protocol maximum \(i\). Substituting \(i(h)\) into \eqref{eq:constant-bonus} gives
+\begin{equation}
+\ell \;>\; \frac{1 + i\,v\,\lambda}{(1+i)\,\lambda}.
+\label{eq:euler-dutch}
+\end{equation}
+
+\paragraph{Boundary condition (model-agnostic).}
+At the LLTV boundary we have $\ell = v$ (equivalently $h=1$). Since the Dutch-auction bonus satisfies $i(h)=i(1-h)=0$ at $h=1$, substituting $\ell=v$ into \eqref{eq:euler-dutch} removes any dependence on $i$ and yields a depth-only criterion:
+\begin{equation}
+\boxed{\, v \;\le\; \frac{1}{\lambda}\,}.
+\label{eq:euler-result}
+\end{equation}
+(Rapid check: from $\ell > \frac{1+i\,v\,\lambda}{(1+i)\lambda}$, set $\ell=v$ to get $v>\frac{1+i v\lambda}{(1+i)\lambda}
+\iff v(1+i)\lambda>1+i v\lambda \iff v\lambda>1 \iff v>1/\lambda$; hence health improves at onset only if $v\le 1/\lambda$.)
+
+\noindent
+This statement is \emph{model-agnostic}: it holds for any monotone impact summarized by a penalty factor $\lambda$. For a CP-AMM, $\lambda=1+2c/y$; for the linear (Kyle) model, $\lambda=1+\phi c$. Writing the result in terms of $\lambda$ avoids unnecessary specialization and makes clear that greater depth (smaller $\lambda$) relaxes the admissible LLTV $v$.
+
+
+\section{Discussion and limitations}
+Equation \eqref{eq:euler-result} isolates CP-AMM \emph{depth} as the critical determinant of safety at the LLTV boundary: greater depth (larger \(y\)) lowers \(\lambda\) and raises the allowable \(v\). The derivation is local (infinitesimal step, CP-AMM); integrating over large sales or routing across venues is straightforward in principle but model-specific. Nevertheless, the local condition precisely characterizes when a liquidation step is health-improving versus health-worsening and reconciles dynamic incentives with price impact.
+
+\bigskip
+\begin{thebibliography}{99}
+
+\bibitem{WCP2022}
+J.~Warmuz, A.~Chaudhary, and D.~Pinna, 
+``Toxic Liquidation Spirals,'' 
+\emph{arXiv preprint arXiv:2212.07306}, 2022. [Online]. Available: \url{https://arxiv.org/abs/2212.07306}
+
+\bibitem{Bentley}
+M.~A.~Bentley, 
+``Dutch Liquidation Analysis,'' 
+Euler Labs, Technical Note, 2024.
+
+\bibitem{Kyle1985}
+A.~S.~Kyle, 
+``Continuous Auctions and Insider Trading,'' 
+\emph{Econometrica}, vol.~53, no.~6, pp.~1315--1335, Nov. 1985. [Online]. Available: \url{https://www.jstor.org/stable/1913210}
+
+\end{thebibliography}
+\end{document}
