@@ -1,6 +1,6 @@
 \documentclass[11pt]{article}
 \bibliographystyle{IEEEtran}
-\usepackage{amsmath,amssymb,amsthm,geometry,hyperref}
+\usepackage{amsmath,amssymb,amsthm,geometry,hyperref,xcolor}
 \geometry{margin=1in}
 
 \title{Toxicity Bounds for Dutch-Auction Liquidations}
@@ -64,7 +64,7 @@ A liquidation is \emph{toxic} (reduces health) iff \(dh<0\), i.e.
 In the infinite-liquidity limit \(y\to\infty\) (so \(\lambda\to 1\)), this reduces to the constant-incentive frontier \(\ell < 1/(1+i)\) \cite{WCP2022}.
 
 \subsection{Linear price impact model}
-Warmuz, Chaudhary, and Pinna \cite{WCP2022} propose a linear slippage model to capture execution costs in decentralized liquidations:
+Warmuz, Chaudhary, and Pinna \cite{WCP2022} propose a linear slippage model to capture execution costs in decentralised liquidations:
 \[
 s(x) = \gamma + \frac{\sigma}{L}\,x,
 \]
@@ -82,7 +82,7 @@ This is directly analogous to Kyle’s $\lambda$ in market microstructure theory
 \section{Dynamic Incentives through `Dutch' auctions}
 A so-called `Dutch' auction ties the incentive to health, increasing as health falls:
 \[
-i(h) \;=\; i\,\bigl(1-h\bigr)
+i \to i(h) \;=\; i\,\bigl(1-h\bigr)
 \;=\; i\!\left(1 - \frac{v}{\ell}\right),
 \]
 capped at the protocol maximum \(i\). Substituting \(i(h)\) into \eqref{eq:constant-bonus} gives
@@ -97,11 +97,17 @@ At the LLTV boundary we have $\ell = v$ (equivalently $h=1$). Since the Dutch-au
 \boxed{\, v \;\le\; \frac{1}{\lambda}\,}.
 \label{eq:euler-result}
 \end{equation}
-(Rapid check: from $\ell > \frac{1+i\,v\,\lambda}{(1+i)\lambda}$, set $\ell=v$ to get $v>\frac{1+i v\lambda}{(1+i)\lambda}
-\iff v(1+i)\lambda>1+i v\lambda \iff v\lambda>1 \iff v>1/\lambda$; hence health improves at onset only if $v\le 1/\lambda$.)
+{\color{red}
+\noindent
+\textbf{Check.} From $\ell > \frac{1+i\,v\,\lambda}{(1+i)\lambda}$, set $\ell=v$ to get 
+$v>\frac{1+i v\lambda}{(1+i)\lambda}
+\iff v(1+i)\lambda>1+i v\lambda 
+\iff v\lambda>1 \iff v>1/\lambda$.
+Hence health improves at onset only if $v\le 1/\lambda$.
+}
 
 \noindent
-This statement is \emph{model-agnostic}: it holds for any monotone impact summarized by a penalty factor $\lambda$. For a CP-AMM, $\lambda=1+2c/y$; for the linear (Kyle) model, $\lambda=1+\phi c$. Writing the result in terms of $\lambda$ avoids unnecessary specialization and makes clear that greater depth (smaller $\lambda$) relaxes the admissible LLTV $v$.
+This statement is \emph{model-agnostic}: it holds for any monotone impact summarised by a penalty factor $\lambda$. For a CP-AMM, $\lambda=1+2c/y$; for the linear (Kyle) model, $\lambda=1+\phi c$. Writing the result in terms of $\lambda$ avoids unnecessary specialisation and makes clear that greater depth (smaller $\lambda$) relaxes the admissible LLTV $v$.
 
 
 \section{Discussion and limitations}
