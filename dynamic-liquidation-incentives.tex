@@ -15,11 +15,13 @@
 \maketitle
 
 \begin{abstract}
-We derive a slippage-aware toxicity condition for on-chain liquidations executed via a constant-product automated market maker (CP-AMM). For a fixed (constant) liquidation incentive \(i\), the familiar toxicity frontier \( \mathrm{LTV} < 1/(1+i) \) tightens to
-\(\mathrm{LTV} < 1/(1+i)\lambda\) with \(\lambda := 1 + 2(c/y)\), where \(c\) is the collateral of the borrower (in units of debt) and \(y\) is the CP-AMM reserve of the debt asset. Using a dynamic health-linked liquidation incentive \(i(h) = 1 - h\), we obtain a state-dependent bound and, at the liquidation boundary, a liquidity depth-only condition \( \,v < 1/\lambda\). This reconciles dynamic incentives with the impact of the CP-AMM price and clarifies when dynamic liquidation incentives reduce versus exacerbate spiral risk.
+We derive a slippage-aware toxicity condition for on-chain liquidations executed via a constant-product automated market maker (CP-AMM). For a fixed (constant) liquidation incentive \(i\), the familiar toxicity frontier \( \nu < 1/(1+i) \) tightens to
+\(\nu < 1/(1+i)\lambda\) for a liquidity penalty factor, \(\lambda\), that we derive for both the CP-AMM and a generalised form. Using a dynamic health-linked liquidation incentive \(i(h) = i(1 - h)\), we obtain a state-dependent bound and, at the liquidation boundary, a liquidity depth-only condition \( \,v < 1/\lambda\). This reconciles dynamic incentives with the impact of the CP-AMM price and clarifies when dynamic liquidation incentives reduce versus exacerbate spiral risk.
 \end{abstract}
 
 \section{Introduction}
+Liquidations in on‑chain lending repay debt by selling collateral, typically with a bonus paid to liquidators. When sales route through AMMs, execution moves prices: the sale lowers the pool price and the borrower’s remaining collateral is re‑marked. If the loss on the remainder exceeds the debt reduction, health falls after the step; repeating such steps creates a \emph{toxic liquidation spiral}. Protocols prefer \emph{partial} liquidations to limit slippage, yet in the toxic regime each partial step raises LTV and drives the position toward \emph{full} liquidation or bad debt.
+
 We consider a borrower with collateral value \(c\) (measured in units of the debt asset) and debt \(q\). Let
 \[
 \ell := \frac{q}{c} \quad \text{(LTV)}, 
@@ -54,9 +56,9 @@ dh \;=\; \frac{v}{q}\!\left[dc - \frac{c}{q}\,dq\right]
 \]
 A liquidation is \emph{toxic} (reduces health) iff \(dh<0\), i.e.
 \begin{equation}
-\frac{c}{q} \;<\; (1+i)\!\left(1+\frac{2c}{y}\right)
+\frac{c}{q} \;\lt\; (1+i)\!\left(1+\frac{2c}{y}\right)
 \quad\Longleftrightarrow\quad
-\ell \;<\; \frac{1}{(1+i)\,\lambda},
+\ell \;\gt\; \frac{1}{(1+i)\,\lambda},
 \qquad
 \lambda := 1 + 2\,\frac{c}{y}.
 \label{eq:constant-bonus}
