@@ -20,7 +20,7 @@ We derive a slippage-aware toxicity condition for on-chain liquidations executed
 \end{abstract}
 
 \section{Introduction}
-Liquidations in on‑chain lending repay debt by selling collateral, typically with a bonus paid to liquidators. When sales route through AMMs, execution moves prices: the sale lowers the pool price and the borrower’s remaining collateral is re‑marked. If the loss on the remainder exceeds the debt reduction, health falls after the step; repeating such steps creates a \emph{toxic liquidation spiral}. Protocols prefer \emph{partial} liquidations to limit slippage, yet in the toxic regime each partial step raises LTV and drives the position toward \emph{full} liquidation or bad debt.
+Liquidations in on‑chain lending repay debt by selling collateral, typically with a bonus paid to liquidators. When sales route through AMMs, execution moves prices: the sale lowers the pool price and the borrower’s remaining collateral is re‑marked. If the loss on the remainder exceeds the debt reduction, health falls after the step; repeating such steps creates a \emph{toxic liquidation spiral}. Protocols prefer \emph{partial} liquidations to limit slippage, yet in the toxic regime each partial step increases LTV and drives the position toward \emph{full} liquidation or bad debt.
 
 We consider a borrower with collateral value \(c\) (measured in units of the debt asset) and debt \(q\). Let
 \[
@@ -39,7 +39,7 @@ d(\ln P) \;=\; d(\ln y - \ln x) \;=\; -2\,\frac{dx}{x}
 \end{equation}
 The sale \((1+i)\,da\) of \emph{value} in collateral implies \(dx = \frac{(1+i)\,da}{P}\), and hence \(d(\ln P) = -\frac{2(1+i)}{y}\,da\).
 
-Let collateral $c=sP$, with $s$ the remaining units and $P$ the price. The infinitesimal change in collateral value os $dc = P\,ds + s\,dP$ to first order. The seizure contributes $P\,ds=-(1+i)\,da$, and the price move re-marks the remainder by $s\,dP=c\,d(\ln P)$. Therefore remaining collateral is remarked by
+Let collateral $c=sP$, with $s$ the remaining units and $P$ the price. The infinitesimal change in the collateral value is $dc = P\,ds + s\,dP$ to the first order. The seizure contributes $P\,ds=-(1+i)\,da$, and the price move re-marks the remainder by $s\,dP=c\,d(\ln P)$. Therefore, the remaining collateral is re-marked by
 \[
 c\,d(\ln P) = -\frac{2c(1+i)}{y}\,da,
 \]
@@ -109,7 +109,7 @@ At the LLTV boundary we have $\ell = v$ (equivalently $h=1$). Since the linear f
 % }
 
 \noindent
-This statement is \emph{model-agnostic}: it holds for any monotone impact summarised by a penalty factor $\lambda$. For a CP-AMM, $\lambda=1+2c/y$; for the linear (Kyle) model, $\lambda=1+\phi c$. Writing the result in terms of $\lambda$ avoids unnecessary specialisation and makes clear that greater depth (smaller $\lambda$) relaxes the admissible LLTV $v$.
+This statement is \emph{model-agnostic}: it holds for any monotone impact summarised by a penalty factor $\lambda$. For a CP-AMM, $\lambda=1+2c/y$; for the linear (Kyle) model, $\lambda=1+\phi c$. Writing the result in terms of $\lambda$ avoids unnecessary specialisation and makes clear that a greater depth (smaller $\lambda$) relaxes the admissible LLTV $v$.
 
 
 \section{Discussion and limitations}
