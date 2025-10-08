@@ -39,7 +39,7 @@ d(\ln P) \;=\; d(\ln y - \ln x) \;=\; -2\,\frac{dx}{x}
 \end{equation}
 The sale \((1+i)\,da\) of \emph{value} in collateral implies \(dx = \frac{(1+i)\,da}{P}\), and hence \(d(\ln P) = -\frac{2(1+i)}{y}\,da\).
 
-Let collateral $c=sP$, with $s$ the remaining units and $P$ the price. The infinitesimal change in the collateral value is $dc = P\,ds + s\,dP$ to the first order. The seizure contributes $P\,ds=-(1+i)\,da$, and the price move re-marks the remainder by $s\,dP=c\,d(\ln P)$. Therefore, the remaining collateral is re-marked by
+Let collateral $c=sP$, with $s$ the remaining units and $P$ the price. The infinitesimal change in the collateral value is $dc = P\,ds + s\,dP$ to the first order, neglecting $dsdP$. The seizure contributes $P\,ds=-(1+i)\,da$, and the price move re-marks the remainder by $s\,dP=c\,d(\ln P)$. Therefore, the remaining collateral is re-marked by
 \[
 c\,d(\ln P) = -\frac{2c(1+i)}{y}\,da,
 \]
@@ -57,10 +57,9 @@ dh \;=\; \frac{v}{q}\!\left[dc - \frac{c}{q}\,dq\right]
 A liquidation is \emph{toxic} (reduces health) iff \(dh<0\), i.e.
 \begin{equation}
 \frac{c}{q} \;\lt\; (1+i)\!\left(1+\frac{2c}{y}\right)
-\quad\Longleftrightarrow\quad
+\qquad\text{equivalently}\qquad
 \ell \;\gt\; \frac{1}{(1+i)\,\lambda},
-\qquad
-\lambda := 1 + 2\,\frac{c}{y}.
+\quad \lambda := 1 + 2\,\frac{c}{y}.
 \label{eq:constant-bonus}
 \end{equation}
 In the infinite-liquidity limit \(y\to\infty\) (so \(\lambda\to 1\)), this reduces to the constant incentive frontier \(\ell < 1/(1+i)\) \cite{WCP2022}.
@@ -96,7 +95,7 @@ capped at the protocol maximum \(i\). Substituting \(i(h)\) into \eqref{eq:const
 \paragraph{Boundary condition (model-agnostic).}
 At the LLTV boundary we have $\ell = v$ (equivalently $h=1$). Since the linear function satisfies $i(h)=i(1-h)=0$ at $h=1$, substituting $\ell=v$ into \eqref{eq:euler-dutch} removes any dependence on $i$ and yields a depth-only criterion:
 \begin{equation}
-\boxed{\, v \;\le\; \frac{1}{\lambda}\,}.
+\, v \;\le\; \frac{1}{\lambda}\,
 \label{eq:euler-result}
 \end{equation}
 % {\color{red}
