@@ -1,5 +1,7 @@
 \documentclass[11pt]{article}
 \bibliographystyle{IEEEtran}
+\usepackage[T1]{fontenc}
+\usepackage[utf8]{inputenc}
 \usepackage{amsmath,amssymb,amsthm,geometry,hyperref,xcolor}
 \geometry{margin=1in}
 
@@ -27,7 +29,8 @@ We consider a borrower with collateral value \(c\) (measured in units of the deb
 \ell := \frac{q}{c} \quad \text{(LTV)}, 
 \qquad v \in (0,1) \quad \text{(protocol LLTV parameter)}.
 \]
-for health \( h := v\,\frac{c}{q} = v/\ell \). Upon a small liquidation repaying \(da\) units of debt, the liquidator is entitled to a bonus \(i \ge 0\) (possibly state dependent); a fraction \((1+i)\,da\) of collateral value is seized.\footnote{For definitions of \(h\) and the bonus schedule, and the criterion under which liquidation can reduce health even in fixed-bonus systems \cite{Bentley}.}
+for health \( h := v\,\frac{c}{q} = v/\ell \). Upon a small liquidation repaying \(da\) units of debt, the liquidator is entitled to a bonus \(i \ge 0\) (possibly state dependent); a fraction \((1+i)\,da\) of collateral value is seized.
+% \footnote{For definitions of \(h\) and the bonus schedule, and the criterion under which liquidation can reduce health even in fixed-bonus systems \cite{Bentley}.}
 
 \section{Slippage-aware toxicity}
 
@@ -56,9 +59,9 @@ dh \;=\; \frac{v}{q}\!\left[dc - \frac{c}{q}\,dq\right]
 \]
 A liquidation is \emph{toxic} (reduces health) iff \(dh<0\), i.e.
 \begin{equation}
-\frac{c}{q} \;\lt\; (1+i)\!\left(1+\frac{2c}{y}\right)
+\frac{c}{q} \;<\; (1+i)\!\left(1+\frac{2c}{y}\right)
 \qquad\text{equivalently}\qquad
-\ell \;\gt\; \frac{1}{(1+i)\,\lambda},
+\ell \;>\; \frac{1}{(1+i)\,\lambda},
 \quad \lambda := 1 + 2\,\frac{c}{y}.
 \label{eq:constant-bonus}
 \end{equation}
@@ -122,10 +125,10 @@ J.~Warmuz, A.~Chaudhary, and D.~Pinna,
 ``Toxic Liquidation Spirals,'' 
 \emph{arXiv preprint arXiv:2212.07306}, 2022. [Online]. Available: \url{https://arxiv.org/abs/2212.07306}
 
-\bibitem{Bentley}
-M.~A.~Bentley, 
-``Dutch Liquidation Analysis,'' 
-Euler Labs, Technical Note, 2024.
+% \bibitem{Bentley}
+% M.~A.~Bentley, 
+% ``Dutch Liquidation Analysis,'' 
+% Euler Labs, Technical Note, 2024.
 
 \bibitem{Kyle1985}
 A.~S.~Kyle, 
